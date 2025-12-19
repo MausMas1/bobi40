@@ -51,10 +51,20 @@ export const Controls = ({
                         fontSize: '0.8rem',
                         color: 'rgba(255,255,255,0.4)',
                         letterSpacing: '1px',
-                        textTransform: 'uppercase'
+                        textTransform: 'uppercase',
+                        marginBottom: '4px'
                     }}>
                         {isPlaying ? 'Scratch to Remix' : 'Tap to Play'}
                     </p>
+                    {!isPlaying && (
+                        <p style={{
+                            fontSize: '0.6rem',
+                            color: 'rgba(255,255,255,0.3)',
+                            marginTop: '0'
+                        }}>
+                            (To listen, unmute phone)
+                        </p>
+                    )}
                 </div>
 
                 {/* Pitch Slider (Vertical) */}
