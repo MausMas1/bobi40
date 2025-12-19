@@ -58,11 +58,12 @@ export const Controls = ({
                     </p>
                     {!isPlaying && (
                         <p style={{
-                            fontSize: '0.6rem',
-                            color: 'rgba(255,255,255,0.3)',
-                            marginTop: '0'
+                            fontSize: '0.75rem',
+                            color: 'rgba(255,255,255,0.5)',
+                            marginTop: '5px',
+                            fontWeight: 'bold'
                         }}>
-                            (To listen, unmute phone)
+                            ⚠️ To listen, unmute phone ⚠️
                         </p>
                     )}
                 </div>
