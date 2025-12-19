@@ -6,6 +6,8 @@ import { useVinylAudio } from './hooks/useVinylAudio'
 function App() {
   const [pitch, setPitch] = useState(1.0);
 
+  const audioUrl = import.meta.env.BASE_URL + '40 Bjorn.mp3';
+
   const {
     isReady,
     isPlaying,
@@ -14,7 +16,7 @@ function App() {
     setScratchRate,
     triggerSiren,
     triggerLaser
-  } = useVinylAudio(import.meta.env.BASE_URL + '40 Bjorn.mp3');
+  } = useVinylAudio(audioUrl);
 
   const handlePlayPause = () => {
     if (isPlaying) pause();
@@ -23,6 +25,14 @@ function App() {
 
   return (
     <>
+      {/* Loading Overlay */}
+      {!isReady && (
+        <div className="loading-overlay">
+          <div className="spinner"></div>
+          <p>Muziek laden...</p>
+        </div>
+      )}
+
       {/* Branding */}
       <h1 className="brand-logo">Bobi's platenspeler</h1>
 
@@ -41,6 +51,7 @@ function App() {
         triggerLaser={triggerLaser}
         pitch={pitch}
         setPitch={setPitch}
+        audioUrl={audioUrl}
       />
     </>
   )

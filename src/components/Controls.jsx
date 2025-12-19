@@ -11,7 +11,8 @@ export const Controls = ({
     pitch = 1.0,
     setPitch,
     triggerSiren,
-    triggerLaser
+    triggerLaser,
+    audioUrl
 }) => {
     return (
         <div className="controls-container" style={{
@@ -124,8 +125,8 @@ export const Controls = ({
                 </button>
 
                 <a
-                    href="/song.mp3"
-                    download
+                    href={audioUrl}
+                    download="40-bjorn-party-mix.mp3"
                     className="icon-btn"
                     style={{ flexDirection: 'column', gap: '5px', color: 'var(--text-secondary)', textDecoration: 'none' }}
                 >
