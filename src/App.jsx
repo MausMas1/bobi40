@@ -14,7 +14,7 @@ function App() {
     setScratchRate,
     triggerSiren,
     triggerLaser
-  } = useVinylAudio('/40 Bjorn.mp3');
+  } = useVinylAudio(import.meta.env.BASE_URL + '40 Bjorn.mp3');
 
   const handlePlayPause = () => {
     if (isPlaying) pause();
