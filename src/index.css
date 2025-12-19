@@ -164,4 +164,21 @@ button {
     to {
         transform: rotate(360deg);
     }
+}/* Footer Branding */
+.footer-brand {
+    position: absolute;
+    bottom: 10px;
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.4);
+    letter-spacing: 1px;
+    font-family: sans-serif;
+    pointer-events: none;
+}
+
+/* Mobile Metrics Fix */
+#root {
+    min-height: 100dvh;
+    /* Use dynamic viewport height for mobile browsers */
+    padding-bottom: 20px;
+    /* Extra padding for bottom controls */
 }
