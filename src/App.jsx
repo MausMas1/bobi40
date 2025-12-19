@@ -6,7 +6,7 @@ import { useVinylAudio } from './hooks/useVinylAudio'
 function App() {
   const [pitch, setPitch] = useState(1.0);
 
-  const audioUrl = import.meta.env.BASE_URL + '40 Bjorn.mp3';
+  const audioUrl = import.meta.env.BASE_URL + 'bobi-song.mp3';
 
   const {
     isReady,
@@ -53,6 +53,7 @@ function App() {
         setPitch={setPitch}
         audioUrl={audioUrl}
       />
+      <div className="footer-brand">Made by MM1</div>
     </>
   )
 }
