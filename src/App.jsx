@@ -54,9 +54,7 @@ function App() {
         setPitch={setPitch}
         audioUrl={audioUrl}
       />
-      <div className="footer-brand">
-        Made by MM1 <span style={{ opacity: 0.5, fontSize: '8px' }}>| {debugState} - check mute switch!</span>
-      </div>
+      <div className="footer-brand">Made by MM1</div>
     </>
   )
 }

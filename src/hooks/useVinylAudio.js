@@ -28,6 +28,37 @@ export const useVinylAudio = (audioUrl) => {
       gainNode.connect(ctx.destination);
       gainRef.current = gainNode;
 
+      // Global Unlock Handler (Video Hack for Mute Switch Bypass)
+      const unlockHandler = () => {
+        const video = document.createElement('video');
+        video.src = 'data:video/mp4;base64,AAAAIGZ0eXGlc29tAAAAAGlzb21pc28yYXZjMW1wNDEAAAAIZnJlZQAAAAZmZGF0AAAAAAACAAAABG1vb3YAAABsbXZoAAAAAgEAAQAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAEAAIAAAAATAAAADdHJhawAAAFx0a2hkAAAAAdnQAAAAAAABAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAEAAAAADAAAAAAAAdWR0YQAAADxtZXRhAAAAAAAAACFoZGxyAAAAAAAAAAG1ZGlyAAAAAAAAAAAAAAAAAAAAAAADAAAAI2lsc3QAAAAZaW9vAAAAEWRhdGEAAAAATGF2ZjU2LjQwLjEwMAAAACRlbHN0AAAAAAAAAAEAAAADAAABAAAAAAABAAAAAQAAAAAAAABtbWRpYQAAACBtZGhkAAAAAdnQAAAAAAABAAAAAAABAAAAAAAAAAAAAAA4aGRscgAAAAAAAAAAc291bgAAAAAAAAAAAAAAAFNvdW5kSGFuZGxlcgAAAADgbWluZgAAABBzbWhkAAAAAAAAAAAAAAAkZGluZgAAABxkcmVmAAAAAAAAAAEAAAAMdXJsIAAAAAEAAADgbXRibAAAACxzdHNkAAAAAAAAAAEAAAAmbXA0YQAAAAAAAAABAAAAAAAAAAAAAAABAAAAAQAAAAAAACBzdHRzAAAAAAAAAAEAAAADAAABAAAAABxzdHNjAAAAAAAAAAEAAAABAAAAAwAAAAEAAAAUc3RzegAAAAAAAAAEAAAAIAAAABBzdGNvAAAAAAAAAAEAAAA4AAAAYXVkdGEAAAAZdGFnZwAAAAhkYXRhAAAAADEwNTZsYXZjNTYuNjAuMTAw';
+        video.style.display = 'none';
+        video.setAttribute('playsinline', 'true');
+        video.muted = true; // Still needed for autoplay permission usually, but we want to trigger 'media' session
+        document.body.appendChild(video);
+
+        // We try to play. Even if muted, it triggers the 'media' session on iOS 
+        // which inadvertently unlocks Web Audio to ignore the ringer switch.
+        video.play().then(() => {
+          if (ctx.state === 'suspended') {
+            ctx.resume().then(() => {
+              video.pause();
+              video.remove();
+              ['touchstart', 'touchend', 'click'].forEach(evt =>
+                document.removeEventListener(evt, unlockHandler)
+              );
+            });
+          }
+        }).catch(e => {
+          console.log("Video hack failed, trying resume anyway", e);
+          if (ctx.state === 'suspended') ctx.resume();
+        });
+      };
+
+      ['touchstart', 'touchend', 'click'].forEach(evt =>
+        document.addEventListener(evt, unlockHandler, { once: true })
+      );
+
       // 3. Fetch and Decode immediately (Allowed on iOS if Context exists)
       try {
         if (audioUrl) {
